@@ -313,6 +313,12 @@ function renderQRCode(text) {
   if (!qrcodeContainer) return;
   qrcodeContainer.innerHTML = '';
 
+  // Si el modo es vCard, mostrar la imagen oficial del QR de vCard proporcionada
+  if (activeQrMode === 'vcard') {
+    qrcodeContainer.innerHTML = '<img src="vcard-qr.png" alt="Código QR vCard Ismael Braco" style="width:200px; height:200px; display:block; object-fit:contain; border-radius:8px;" />';
+    return;
+  }
+
   const isLight = htmlElement.getAttribute('data-theme') === 'light';
   // Rojo vibrante o negro elegante para el código QR
   const darkColor = '#0f172a';
@@ -339,12 +345,21 @@ function renderQRCode(text) {
 }
 
 function generateCurrentQR() {
+  if (activeQrMode === 'vcard') {
+    currentQrData = 'vcard-qr.png';
+    if (qrCustomInput) {
+      qrCustomInput.value = 'Tarjeta de Contacto vCard (Ismael Jhostin Braco Ruiz)';
+    }
+    renderQRCode(currentQrData);
+    return;
+  }
+
   if (activeQrMode === 'custom' && qrCustomInput && qrCustomInput.value.trim() !== '') {
     currentQrData = qrCustomInput.value.trim();
   } else {
     currentQrData = contactDataMap[activeQrMode] || contactDataMap.portfolio;
     if (qrCustomInput) {
-      qrCustomInput.value = (activeQrMode === 'vcard') ? 'Tarjeta de Contacto Completa (vCard)' : currentQrData;
+      qrCustomInput.value = currentQrData;
     }
   }
   renderQRCode(currentQrData);
@@ -371,6 +386,15 @@ if (qrCustomInput) {
 // Descargar QR como imagen PNG
 if (downloadQrBtn) {
   downloadQrBtn.addEventListener('click', () => {
+    if (activeQrMode === 'vcard') {
+      const a = document.createElement('a');
+      a.download = 'QR-Ismael-Braco-vCard.png';
+      a.href = 'vcard-qr.png';
+      a.click();
+      showToast('📥 Código QR de vCard descargado exitosamente');
+      return;
+    }
+
     const canvas = qrcodeContainer.querySelector('canvas');
     const img = qrcodeContainer.querySelector('img');
 
@@ -419,6 +443,13 @@ function openQrFullscreenModal() {
   if (!modal || !targetContainer) return;
 
   targetContainer.innerHTML = '';
+
+  if (activeQrMode === 'vcard') {
+    targetContainer.innerHTML = '<img src="vcard-qr.png" alt="Código QR vCard Ismael Braco" style="width:260px; height:260px; display:block; object-fit:contain; border-radius:12px;" />';
+    modal.classList.add('active');
+    return;
+  }
+
   if (typeof QRCode !== 'undefined') {
     new QRCode(targetContainer, {
       text: currentQrData,

@@ -1327,13 +1327,16 @@ section {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 20px;
-  padding: 2.2rem;
+  padding: 2.2rem 1.8rem;
   text-align: center;
   box-shadow: var(--shadow-main), 0 0 35px var(--accent-red-glow);
   position: relative;
   backdrop-filter: blur(12px);
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .qr-canvas-holder {
@@ -1369,19 +1372,35 @@ section {
 }
 
 .qr-status-indicator {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.75rem;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
+  width: 100%;
+  margin-top: 0.8rem;
+  line-height: 1.4;
 }
 
-.qr-status-indicator span {
-  width: 7px;
-  height: 7px;
+.qr-live-dot {
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
   background: #22c55e;
   border-radius: 50%;
   box-shadow: 0 0 8px #22c55e;
+  display: inline-block;
+  animation: pulseDot 2s infinite ease-in-out;
+  flex-shrink: 0;
+}
+
+.qr-status-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+  white-space: normal;
+  display: inline-block;
 }
 
 /* ===================================================================
